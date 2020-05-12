@@ -3,10 +3,9 @@ const router = express.Router();
 const bcrypt = require('bcryptjs')
 const gravatar = require('gravatar');
 const jwt = require('jsonwebtoken');
-const { check, validationResult } = require('express-validator');
-const { reset } = require('nodemon');
-
 const config = require('config')
+const { check, validationResult } = require('express-validator');
+
 const User = require('../../models/users');
 
 /**
@@ -33,10 +32,11 @@ async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-    let user = await _checkIfUserExists(email);
+    let user = await _checkIfUserExists(email, res);
     user = _createUser(name, email, password);
-    _encryptPassword(user, password);
+    await _encryptPassword(user, password);
     await user.save();
+    console.log(user);
     _sendJsonWebToken(user, res);
 
   } catch(err) {
@@ -47,9 +47,9 @@ async (req, res) => {
 
 let _checkIfUserExists = async (email, res) => {
   let user = await User.findOne({ email });
-    if (user) {
-      return res.status(400).json( { errors: [ { msg: 'User already exists' }]} );
-    }
+  if (user) {
+    return res.status(400).json( { errors: [ { msg: 'User already exists' }]} );
+  }
   return user
 }
 
@@ -60,12 +60,13 @@ const _createUser = (name, email, password) => {
       d: 'mm'
     });
 
-  return new User({
+  let user = new User({
       name,
       email,
       avatar,
       password
     });
+  return user;
 }
 
 const _encryptPassword = async (user, password) => {
