@@ -28,7 +28,7 @@ const ProfileSchema = new mongoose.Schema({
   },
   experience: [
     {
-      tile: {
+      title: {
         type: String,
         required: true
       },
