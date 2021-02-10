@@ -261,6 +261,7 @@ router.put('/education', [auth, [
     const newEdu = {
       school,
       degree,
+      location,
       fieldOfStudy,
       from,
       to,
