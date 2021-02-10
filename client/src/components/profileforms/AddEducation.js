@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addEducation } from '../../actions/profile';
@@ -8,7 +8,7 @@ const AddEducation = ({ addEducation, history }) => {
   const [formData, setFormData] = useState({
     school: '',
     degree: '',
-    fieldofstudy: '',
+    fieldOfStudy: '',
     from: '',
     to: '',
     current: false,
@@ -18,7 +18,7 @@ const AddEducation = ({ addEducation, history }) => {
   const {
     school,
     degree,
-    fieldofstudy,
+    fieldOfStudy,
     from,
     to,
     description,
@@ -67,8 +67,8 @@ const AddEducation = ({ addEducation, history }) => {
           <input
             type="text"
             placeholder="Field of Study"
-            name="fieldofstudy"
-            value={fieldofstudy}
+            name="fieldOfStudy"
+            value={fieldOfStudy}
             onChange={onChange}
           />
         </div>
@@ -121,4 +121,4 @@ AddEducation.propTypes = {
   addEducation: PropTypes.func.isRequired
 };
 
-export default connect(null, { addEducation })(AddEducation);
+export default connect(null, { addEducation })(withRouter(AddEducation));
