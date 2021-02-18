@@ -11,16 +11,18 @@ import CreateProfile from './components/profileforms/CreateProfile';
 import EditProfile from './components/profileforms/EditProfile';
 import Dashboard from './components/dashboard/Dashboard';
 import AddExperience from './components/profileforms/AddExperience';
+import AddEducation from './components/profileforms/AddEducation';
+import Profiles from './components/profiles/Profiles';
+import Profile from './components/profile/Profile';
+import Posts from './components/posts/Posts';
+import Post from './components/post/Post';
 
 // Redux
 import { Provider } from 'react-redux';
 import store from './store';
 import { loadUser } from './actions/auth';
 import setAuthToken from './utils/setAuthToken';
-import AddEducation from './components/profileforms/AddEducation';
-import Profiles from './components/profiles/Profiles';
-import Profile from './components/profile/Profile';
-import Posts from './components/posts/Posts';
+
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -50,6 +52,7 @@ const App = () => {
               <PrivateRoute exact path='/add-education' component={AddEducation}/>
               <PrivateRoute exact path='/dashboard' component={Dashboard}/>
               <PrivateRoute exact path='/posts' component={Posts} />
+              <PrivateRoute exact path='/posts/:id' component={Post} />
             </Switch>
           </section>
         </Fragment>
