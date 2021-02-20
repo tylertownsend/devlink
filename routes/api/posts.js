@@ -188,4 +188,64 @@ router.put('/like/:id', auth, async (req, res) => {
     res.status(500).send('Send error');
   }
 });
+
+router.post('/comment/:id', auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+
+    if (!post) {
+      return res.status(404).json({ msg: 'Post not found' });
+    }
+
+    const user = await User.findById(req.user.id).select('-password');
+
+    const comment = {
+      user: req.user.id,
+      text: req.body.text,
+      name: user.name,
+      avatar: user.avatar,
+    };
+    post.comments.unshift(comment);
+    await post.save();
+
+  } catch (err) {
+    if (!err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'Post not found' });
+    }
+    console.error(err);
+    res.status(500).send('Send error');
+  }
+});
+
+router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+
+    if (!post) {
+      return res.status(404).json({ msg: 'Post not found' });
+    }
+
+    const comment = post.comments.find(comment => {
+      return comment.id.toString() === req.params.comment_id;
+    });
+    // Make sure comment exists
+    if (!comment) {
+      return res.status(404).json({ msg: 'Comment does not exist' });
+    }
+    // Check user
+    if (comment.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: 'User not authorized' });
+    }
+
+    post.comments = post.comments.filter(
+      ({ id }) => id !== req.params.comment_id
+    );
+    await post.save();
+    return res.json(post.comments);
+  } catch (err) {
+    console.error(err.message);
+    return res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;
