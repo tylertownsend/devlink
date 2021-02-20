@@ -4,8 +4,8 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
 import PostItem from '../posts/PostItem';
-import CommentForm from '../post/CommentForm';
-import CommentItem from '../post/CommentItem';
+import CommentForm from './CommentForm';
+import CommentItem from './CommentItem';
 import { getPost } from '../../actions/post';
 
 const Post = (props) => {

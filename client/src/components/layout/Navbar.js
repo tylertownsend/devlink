@@ -45,10 +45,10 @@ export const Navbar = ({ auth, logout }) => {
   )
 }
 
-Navbar.propTypes = {
-  logout: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
-}
+// Navbar.propTypes = {
+//   logout: PropTypes.func.isRequired,
+//   auth: PropTypes.object.isRequired
+// }
 
 const mapStateToProps = (state) => {
   return {
