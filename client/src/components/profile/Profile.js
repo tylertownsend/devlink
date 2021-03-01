@@ -76,11 +76,11 @@ const Profile = ({ getProfileById, profile: { profile }, auth, match }) => {
   );
 };
 
-Profile.propTypes = {
-  getProfileById: PropTypes.func.isRequired,
-  profile: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired
-};
+// Profile.propTypes = {
+//   getProfileById: PropTypes.func.isRequired,
+//   profile: PropTypes.object.isRequired,
+//   auth: PropTypes.object.isRequired
+// };
 
 const mapStateToProps = (state) => ({
   profile: state.profile,
