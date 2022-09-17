@@ -1,23 +1,25 @@
-const express = require('express');
+import express from 'express';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import config from 'config';
+import { check, validationResult } from 'express-validator';
+
+import { auth } from '../../middleware/auth';
+import { UserModel } from '../../models/users';
+
 const router = express.Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const config = require('config')
-const { check, validationResult } = require('express-validator');
 
-const auth = require('../../middleware/auth');
-const User = require('../../models/users');
-
+// TODO: Update any any arguments
 /**
  * @route       GET api/auth
  * @description Test route
  * @access      Public
  */
-router.get('/', auth, async (req, res) => {
+router.get('/', auth, async (req: any, res: any) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
+    const user = await UserModel.findById(req.user.id).select('-password');
     res.json(user);
-  } catch (err) {
+  } catch (err: any) {
     console.error(err.message);
     res.send(500).send('Server error: ' + err.message);
   }
@@ -33,7 +35,7 @@ router.post('/',
   check('email', 'Please include a valid email').isEmail(),
   check('password', 'Please enter a valid password').isLength({ min: 6 })
 ],
-async (req, res) => {
+async (req: any, res: any) => {
   const errors = validationResult(req);
   if(!errors.isEmpty()) {
     return res.status(400).json ({ errors: errors.array() });
@@ -48,21 +50,21 @@ async (req, res) => {
       return res.status(400).json( { errors: [ { msg: 'Invalid Credentials.' }]} );
     }
     _sendJsonWebToken(user, res);
-  } catch(err) {
+  } catch(err: any) {
     console.error(err.message);
     res.status(500).send('Server error');
   }
 });
 
-let _getUser = async (email, res) => {
-  let user = await User.findOne({ email });
+let _getUser = async (email: any, res: any) => {
+  let user = await UserModel.findOne({ email });
   if (!user) {
     return res.status(400).json( { errors: [ { msg: 'Invalid Credentials.' }]} );
   }
   return user
 }
 
-const _sendJsonWebToken = (user, res) => {
+const _sendJsonWebToken = (user: any, res: any) => {
   const payload = {
     user: {
       id: user.id
@@ -73,7 +75,7 @@ const _sendJsonWebToken = (user, res) => {
     payload,
     config.get('jwtSecret'),
     { expiresIn: 360000 },
-    (err, token) => {
+    (err: any, token: any) => {
       if (err) throw err;
       res.json({ token });
     });

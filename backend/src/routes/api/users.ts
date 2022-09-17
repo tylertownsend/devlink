@@ -1,12 +1,14 @@
-const express = require('express');
-const router = express.Router();
-const bcrypt = require('bcryptjs')
-const gravatar = require('gravatar');
-const jwt = require('jsonwebtoken');
-const config = require('config')
+import express from 'express';
+import bcrypt from 'bcryptjs';
+import gravatar from 'gravatar';
+import jwt from 'jsonwebtoken';
+import config from 'config';
 const { check, validationResult } = require('express-validator');
 
-const User = require('../../models/users');
+import { User, UserModel } from '../../models/users';
+
+
+const router = express.Router();
 
 /**
  * @route       POST api/users
@@ -23,7 +25,7 @@ router.post('/', [
     'Please enter a password with 6 or more characters')
   .isLength({ min: 6 })
 ],
-async (req, res) => {
+async (req: any, res: any) => {
   const errors = validationResult(req);
   if(!errors.isEmpty()) {
     return res.status(400).json ({ errors: errors.array() });
@@ -32,35 +34,36 @@ async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-    let user = await _checkIfUserExists(email, res);
-    user = _createUser(name, email, password);
+    await _checkIfUserExists(email, res);
+
+    const user = _createUser(name, email, password);
     await _encryptPassword(user, password);
     await user.save();
     console.log(user);
     _sendJsonWebToken(user, res);
 
-  } catch(err) {
+  } catch(err: any) {
     console.error(err.message);
     res.status(500).send('Server error');
   }
 });
 
-let _checkIfUserExists = async (email, res) => {
-  let user = await User.findOne({ email });
+let _checkIfUserExists = async (email: string, res: any): Promise<null> => {
+  let user = await UserModel.findOne({ email });
   if (user) {
     return res.status(400).json( { errors: [ { msg: 'User already exists' }]} );
   }
   return user
 }
 
-const _createUser = (name, email, password) => {
+const _createUser = (name: string, email: string, password: string) => {
   const avatar = gravatar.url(email, {
       s: '200',
       r: 'pg',
       d: 'mm'
     });
 
-  let user = new User({
+  const user = new UserModel({
       name,
       email,
       avatar,
@@ -69,12 +72,12 @@ const _createUser = (name, email, password) => {
   return user;
 }
 
-const _encryptPassword = async (user, password) => {
+const _encryptPassword = async (user: any, password: string) => {
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(password, salt);
 }
 
-const _sendJsonWebToken = (user, res) => {
+const _sendJsonWebToken = (user: any, res: any) => {
   const payload = {
     user: {
       id: user.id

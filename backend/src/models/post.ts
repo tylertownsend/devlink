@@ -1,4 +1,6 @@
-const mongoose = require('mongoose');
+import * as mongoose from 'mongoose';
+import { ConstructorMapping } from '../types/constructorMapping';
+import { User } from './users';
 const Schema = mongoose.Schema;
 
 const PostSchema = new Schema({
@@ -48,4 +50,21 @@ const PostSchema = new Schema({
   ],
 });
 
-module.exports = Post = mongoose.model('post', PostSchema);
+export type Post = {
+  user: User;
+  text: string;
+  name: string;
+  avatar: string;
+  likes: Array<User>;
+  comments: Array<Comment>;
+}
+
+export type Comment = {
+  user: User;
+  text: string;
+  name: string;
+  avatar: string;
+  date: mongoose.Date;
+}
+
+export const PostModel = mongoose.model('post', PostSchema);

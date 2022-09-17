@@ -1,11 +1,12 @@
-const express = require('express');
-const connectDB = require('./db');
+import express, { Express } from 'express';
 
-const app = express();
+import { connectDB } from './db';
+
+const app: Express = express();
 
 connectDB();
 
-app.use(express.json({ extended: false}));
+app.use(express.json({ }));
 
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/profile', require('./routes/api/profile'));
