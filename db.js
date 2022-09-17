@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const config = require('config');
+console.log(config);
 const db = config.get('mongoUri');
+console.log(db);
 
 const connectDB = async() => {
   try {
