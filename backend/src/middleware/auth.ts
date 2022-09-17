@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 // import { Request, Response, NextFunction } from 'express';
-import * as config from 'config';
+import config from 'config';
 
 // TODO update arguments
 export function auth(req: any, res: any, next: any) {

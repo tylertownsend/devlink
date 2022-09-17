@@ -51,7 +51,7 @@ async (req: any, res: any) => {
     }
     _sendJsonWebToken(user, res);
   } catch(err: any) {
-    console.error(err.message);
+    console.error("Error Message" + err.message);
     res.status(500).send('Server error');
   }
 });

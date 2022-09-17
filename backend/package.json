@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server",
     "build": "npx tsc",
-    "server": "\"npx tsc --watch\" nodemon -q dist/index.js --delay 300ms server --ignore client",
+    "server": "nodemon ./src/server.ts --delay 300ms server --ignore client",
     "client": "npm start --prefix ../client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
@@ -32,7 +32,7 @@
     "@types/mongoose": "^5.11.97",
     "@types/node": "^18.7.18",
     "concurrently": "^5.2.0",
-    "nodemon": "^2.0.3",
+    "nodemon": "^2.0.20",
     "redux-devtools-extension": "^2.13.8",
     "typescript": "^4.8.3"
   }

@@ -9,3 +9,6 @@ config/default.json
   "jwtSecret": "<some-string>"
 }
 ```
+
+# Proxy Errors
+https://stackoverflow.com/a/50186816

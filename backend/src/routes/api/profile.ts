@@ -14,11 +14,10 @@ import { User, UserModel } from '../../models/users';
  */
 router.get('/me', auth, async (req: any, res) => {
   try {
-    const profile = await ProfileModel.findOne({ user: req.user.id }).populate(['name', 'avatar']);
+    const profile = await ProfileModel.findOne({ user: req.user.id }).populate('user', ['name', 'avatar'])
     if (!profile) {
       return res.status(400).json({ msg: 'There is no profile for this user' })
     }
-
     res.json(profile);
   } catch (err: any) {
     console.error(err.message);

@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import * as config from 'config';
+import config from 'config';
 
 console.log(config);
 const db: string = config.get('mongoUri');
