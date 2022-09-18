@@ -100,9 +100,23 @@ export type ProfileState = {
   date: string;
   education: any;
   experience: any;
-  skils: Array<string>;
+  skills: Array<string>;
   status: string;
   user: UserState;
+  social: SocialState;
+  githubUsername: string;
+  website: string;
+  location: string;
+}
+
+export type SocialState = {
+  __v: number;
+  _id: string;
+  linkedin: string;
+  youtube: string;
+  instagram: string;
+  facebook: string;
+  twitter: string;
 }
 
 export type UserState = {

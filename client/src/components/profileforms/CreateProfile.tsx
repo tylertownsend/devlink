@@ -1,10 +1,12 @@
 import React, { Fragment, useState } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { createProfile } from '../../actions/profile';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { connect, ConnectedProps } from 'react-redux';
 
-const CreateProfile = (props: any) => {
+import { createProfile, ProfileFormData } from '../../actions/profile';
+
+type CreateProfileProps = PropsFromRedux & RouteComponentProps;
+
+const CreateProfile = (props: CreateProfileProps) => {
   const createProfile = props.createProfile;
   const history = props.history;
   const [formData, setFormData] = useState({
@@ -20,7 +22,7 @@ const CreateProfile = (props: any) => {
     linkedin: '',
     youtube: '',
     instagram: ''
-  });
+  } as ProfileFormData);
 
   const onChange = (e: any) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -159,8 +161,10 @@ const CreateProfile = (props: any) => {
   )
 }
 
-CreateProfile.propTypes = {
+{/* CreateProfile.propTypes = {
   createProfile: PropTypes.func.isRequired
-};
+}; */}
+const connector = connect(null, { createProfile });
+type PropsFromRedux = ConnectedProps<typeof connector>;
 
-export default connect(null, { createProfile })(withRouter(CreateProfile));
+export default connector(withRouter(CreateProfile));

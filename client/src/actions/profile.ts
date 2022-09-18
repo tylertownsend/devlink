@@ -12,6 +12,41 @@ import {
   NO_REPOS
 } from './actionTypes';
 
+export type ProfileFormData = {
+  company: string;
+  website: string;
+  location: string;
+  status: string;
+  skills: string;
+  githubUsername: string;
+  bio: string;
+  twitter: string;
+  facebook: string;
+  linkedin: string;
+  youtube: string;
+  instagram: string;
+}
+
+export type ExperienceFormData = {
+  company: string;
+  title: string;
+  location: string;
+  from: string;
+  to: string;
+  current: boolean;
+  description: string;
+}
+
+export type EducationFormData = {
+  school: string;
+  degree: string;
+  fieldOfStudy: string;
+  from: string;
+  to: string;
+  current: boolean;
+  description: string;
+}
+
 export function getCurrentProfile() {
   return async (dispatch: any) => {
     try {
@@ -95,7 +130,7 @@ export function getGithubRepos(username: string) {
  * @param edit 
  * @returns 
  */
-export function createProfile(formData: any, history: any, edit = false) {
+export function createProfile(formData: ProfileFormData, history: any, edit = false) {
   return async function(dispatch: any) {
     try {
       const config = {

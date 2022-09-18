@@ -1,10 +1,11 @@
 import React, { Fragment, useState } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { addEducation } from '../../actions/profile';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { connect, ConnectedProps } from 'react-redux';
+import { addEducation, EducationFormData } from '../../actions/profile';
 
-const AddEducation = ({ addEducation, history }: any) => {
+type AddEducationProps = PropsFromRedux & RouteComponentProps;
+
+const AddEducation = ({ addEducation, history }: AddEducationProps) => {
   const [formData, setFormData] = useState({
     school: '',
     degree: '',
@@ -13,7 +14,7 @@ const AddEducation = ({ addEducation, history }: any) => {
     to: '',
     current: false,
     description: ''
-  });
+  } as EducationFormData);
 
   const {
     school,
@@ -82,7 +83,7 @@ const AddEducation = ({ addEducation, history }: any) => {
               type="checkbox"
               name="current"
               checked={current}
-              // value={current}
+              value={`${current}`}
               onChange={() => setFormData({ ...formData, current: !current })}
             />{' '}
             Current School
@@ -117,8 +118,7 @@ const AddEducation = ({ addEducation, history }: any) => {
   );
 };
 
-AddEducation.propTypes = {
-  addEducation: PropTypes.func.isRequired
-};
+const connector = connect(null, { addEducation });
+type PropsFromRedux = ConnectedProps<typeof connector>;
 
-export default connect(null, { addEducation })(withRouter(AddEducation));
+export default connector(withRouter(AddEducation));

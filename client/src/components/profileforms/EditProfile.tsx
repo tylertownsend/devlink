@@ -1,17 +1,18 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import { createProfile, getCurrentProfile } from '../../actions/profile';
+import ApplicationState, { ApplicationProfileState, ProfileState } from '../../state/applicationState';
 
-const EditProfile = (props: any) => {
+type EditProfileProps = PropsFromRedux & RouteComponentProps;
+
+const EditProfile = (props: EditProfileProps) => {
   const createProfile = props.createProfile;
   const history = props.history;
   const getCurrentProfile = props.getCurrentProfile; 
-  const {
-    profile,
-    loading
-  } = props.profile;
+  const { loading } = props.profile;
+  const profileData = props.profile.profile;
 
   const [formData, setFormData] = useState({
     company: '',
@@ -33,20 +34,20 @@ const EditProfile = (props: any) => {
 
   useEffect(() => {
     getCurrentProfile();
-
+    const profile = props.profile.profile as ProfileState;
     setFormData({
-      company: loading || profile.company ? profile.company : '',
-      website: loading || profile.website ? profile.website : '',
-      location: loading || profile.location ? profile.location : '',
-      status: loading || profile.status ? profile.status : '',
-      skills: loading || profile.skills ? profile.skills.join(',') : '',
+      company:        loading || profile.company        ? profile.company : '',
+      website:        loading || profile.website        ? profile.website : '',
+      location:       loading || profile.location       ? profile.location : '',
+      status:         loading || profile.status         ? profile.status : '',
+      skills:         loading || profile.skills         ? profile.skills.join(',') : '',
       githubUsername: loading || profile.githubUsername ? profile.githubUsername : '',
-      bio: loading || profile.bio ? profile.bio : '',
-      twitter: loading || profile.social ? profile.social.twitter : '',
-      facebook: loading || profile.social ? profile.social.facebook : '',
-      linkedin: loading || profile.social ? profile.social.linkedin : '',
-      youtube: loading || profile.social ? profile.social.youtube : '',
-      instagram: loading || profile.social ? profile.social.instagram : ''
+      bio:            loading || profile.bio            ? profile.bio : '',
+      twitter:        loading || profile.social         ? profile.social.twitter : '',
+      facebook:       loading || profile.social         ? profile.social.facebook : '',
+      linkedin:       loading || profile.social         ? profile.social.linkedin : '',
+      youtube:        loading || profile.social         ? profile.social.youtube : '',
+      instagram:      loading || profile.social         ? profile.social.instagram : ''
     });
   }, [loading])
 
@@ -73,9 +74,6 @@ const EditProfile = (props: any) => {
     e.preventDefault();
     createProfile(formData, history, true);
   }
-
-  
-
   return (
     <Fragment>
       <h1 className="large text-primary">
@@ -188,19 +186,14 @@ const EditProfile = (props: any) => {
   )
 }
 
-EditProfile.propTypes = {
-  createProfile: PropTypes.func.isRequired,
-  getCurrentProfile: PropTypes.func.isRequired,
-  profile: PropTypes.object.isRequired
-};
 
-const mapStateToProps = (state: any) => {
+function mapStateToProps(state: ApplicationState): { profile: ApplicationProfileState; } {
   return {
     profile: state.profile
   }
 };
 
-export default connect(
-  mapStateToProps,
-  { createProfile, getCurrentProfile }
-)(withRouter(EditProfile));
+const connector = connect( mapStateToProps, { createProfile, getCurrentProfile });
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(withRouter(EditProfile));

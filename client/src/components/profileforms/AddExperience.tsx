@@ -1,10 +1,11 @@
 import React, { Fragment, useState } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { addExperience } from '../../actions/profile';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { connect, ConnectedProps } from 'react-redux';
+import { addExperience, ExperienceFormData } from '../../actions/profile';
 
-const AddExperience = ({ addExperience, history }: any) => {
+type AddExperienceProps = PropsFromRedux & RouteComponentProps;
+
+const AddExperience = ({ addExperience, history }: AddExperienceProps) => {
   const [formData, setFormData] = useState({
     company: '',
     title: '',
@@ -13,7 +14,7 @@ const AddExperience = ({ addExperience, history }: any) => {
     to: '',
     current: false,
     description: ''
-  });
+  } as ExperienceFormData);
 
   const { company, title, location, from, to, current, description } = formData;
 
@@ -74,7 +75,7 @@ const AddExperience = ({ addExperience, history }: any) => {
               type="checkbox"
               name="current"
               checked={current}
-              // value={current}
+              value={`${current}`}
               onChange={() => {
                 setFormData({ ...formData, current: !current });
               }}
@@ -111,8 +112,7 @@ const AddExperience = ({ addExperience, history }: any) => {
   );
 };
 
-AddExperience.propTypes = {
-  addExperience: PropTypes.func.isRequired
-};
+const connector = connect(null, { addExperience });
+type PropsFromRedux = ConnectedProps<typeof connector>;
 
-export default connect(null, { addExperience })(withRouter(AddExperience));
+export default connector(withRouter(AddExperience));
