@@ -1,28 +1,32 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 
-export const Alert = ({alerts}: any) => {
-  if (alerts != null && alerts.length > 0 ) {
-    return alerts.map((alert: any) => 
+import ApplicationState, { AlertState } from '../../state/applicationState';
+
+type AlertProps = { alerts: Array<AlertState> };
+
+// See how to return the propert type here
+export const Alert = ( { alerts }: PropsFromRedux ) => {
+    const alertElements = alerts != null && alerts.length > 0 ? alerts.map((alert: AlertState) => 
       <div key={alert.id} className={`alert alert-${alert.alertType}`}>
         {alert.msg}
       </div>
-    );
-  } else {
-    return <div></div>
-  }
-  
+    ) : <div></div>;
+    return <React.Fragment>
+      { alertElements }
+    </React.Fragment>
 }
 
-Alert.propTypes = {
-  alerts: PropTypes.array.isRequired
+// Alert.propTypes = {
+//   alerts: PropTypes.array.isRequired
+// }
+
+function mapStateToProps (state: ApplicationState): AlertProps {
+  return { alerts: state.alert };
 }
 
-function mapStateToProps (state: any) {
-  console.log('alert');
-  console.log(state);
-  return { alerts: state.alert }
-}
-
-export default connect(mapStateToProps)(Alert);
+// TODOO export connect<AlertProps, DefaultStateProps>
+const connector = connect(mapStateToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+export default connector(Alert);

@@ -1,25 +1,33 @@
 type ApplicationState = {
-  alert: Array<any>
-  auth: {
-    token: string;
-    isAuthenticated: boolean;
-    loading: boolean;
-    user: User;
-  }
+  alert: Array<AlertState>
+  auth: AuthState; 
   post: {
-    posts: Array<Post>;
-    post: Post;
+    posts: Array<PostState>;
+    post: PostState;
     loading: boolean;
   }
   profile: {
     loading: boolean;
-    profile: Profile;
-    profiles: Array<Profile>;
+    profile: ProfileState;
+    profiles: Array<ProfileState>;
     repo: Array<any>;
   }
 }
 
-type Post = {
+export type AuthState = {
+  token: string;
+  isAuthenticated: boolean;
+  loading: boolean;
+  user: UserState;
+}
+
+export type AlertState = {
+  msg: string;
+  alertType: string;
+  id: string;
+}
+
+export type PostState = {
   __v: number;
   /**
    * Unique id associated with the post
@@ -27,7 +35,7 @@ type Post = {
   _id: string;
   avatar: string;
   comments: Array<Comment>;
-  likes: Array<Like>;
+  likes: Array<LikeState>;
   /**
    * Name of the user who posted;
    */
@@ -39,13 +47,13 @@ type Post = {
   user: string;
 }
 
-type Comment = {
+export type CommentState = {
   /**
    * The unique of comment entry
    */
   _id: string;
   /**
-   * The unique id associated with a user entry ((u as User)._id)
+   * The unique id associated with a user entry ((u as UserState)._id)
    */
   user: string;
   /**
@@ -64,7 +72,7 @@ type Comment = {
   avatar: string;
 }
 
-type Like = {
+export type LikeState = {
   /**
    * The unique id associated with this like entry.
    */
@@ -75,7 +83,7 @@ type Like = {
   user: string;
 }
 
-type Profile = {
+export type ProfileState = {
   __v: number;
   /**
    * Unique id provided for each entry
@@ -88,10 +96,10 @@ type Profile = {
   experience: any;
   skils: Array<string>;
   status: string;
-  user: User;
+  user: UserState;
 }
 
-type User = {
+export type UserState = {
   _id: string;
   avatar: string;
   name: string;

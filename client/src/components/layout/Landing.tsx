@@ -1,13 +1,18 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import PropTypes from 'prop-types';
+import ApplicationState from '../../state/applicationState';
 
-export const Landing = ({ isAuthenticated }: any) => {
+type LandingProps = {
+  isAuthenticated: boolean;
+}
+
+export const Landing = ({ isAuthenticated }: PropsFromRedux) => {
   if (isAuthenticated) {
     return <Redirect to="/dashboard"></Redirect>;
   }
-  return (
+  return <React.Fragment>
     <section className="landing">
       <div className="dark-overlay">
         <div className="landing-inner">
@@ -23,19 +28,16 @@ export const Landing = ({ isAuthenticated }: any) => {
         </div>
       </div>
     </section>
-  );
+  </React.Fragment>
+  ;
 }
 
-Landing.propTypes = {
-  isAuthenticated: PropTypes.bool
-}
-
-const mapStateToProps = (state: any) => {
-  console.log('landing');
-  console.log(state);
+const mapStateToProps = (state: ApplicationState): LandingProps => {
   return {
     isAuthenticated: state.auth.isAuthenticated
   };
 }
 
-export default connect(mapStateToProps)(Landing);
+const connector = connect(mapStateToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>
+export default connector(Landing);
