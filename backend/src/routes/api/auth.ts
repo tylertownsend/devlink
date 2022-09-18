@@ -16,9 +16,9 @@ const router = express.Router();
  * @description Test route
  * @access      Public
  */
-router.get('/', auth, async (req: any, res: any) => {
+router.get('/', auth, async (req: Request, res: Response) => {
   try {
-    const user = await UserModel.findById(req.user.id).select('-password');
+    const user = await UserModel.findById(req.body.user.id).select('-password');
     res.json(user);
   } catch (err: any) {
     console.error(err.message);
