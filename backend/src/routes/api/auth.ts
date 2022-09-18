@@ -5,7 +5,7 @@ import config from 'config';
 import { check, validationResult } from 'express-validator';
 
 import { auth } from '../../middleware/auth';
-import { UserModel } from '../../models/users';
+import { UserDocument, User, UserModel } from '../../models/users';
 import { UserCredentialData } from '../data/users';
 
 const router = express.Router();
@@ -62,7 +62,7 @@ async (req: Request<any, any, UserCredentialData>, res: Response) => {
   }
 });
 
-async function getUser(email: string, res: any) {
+async function getUser(email: string, res: Response) {
   const user = await UserModel.findOne({ email });
   if (!user) {
     res.status(400).json( { errors: [ { msg: 'Invalid Credentials.' }]} );
@@ -71,7 +71,7 @@ async function getUser(email: string, res: any) {
   return user;
 }
 
-function sendJsonWebToken(user: any, res: any) {
+function sendJsonWebToken(user: UserDocument, res: Response) {
   const payload = {
     user: {
       id: user.id

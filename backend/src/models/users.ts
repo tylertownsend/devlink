@@ -27,8 +27,10 @@ export type User = {
   name: string;
   email: string;
   password: string;
-  avatar: string;
-  date: mongoose.Date;
+  avatar?: string;
+  date: Date;
 }
+
+export type UserDocument = mongoose.Document<unknown, any, User> & User;
 
 export const UserModel = mongoose.model('user', UserSchema);
