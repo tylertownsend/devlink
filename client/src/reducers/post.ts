@@ -16,7 +16,7 @@ const initialState = {
   error: {}
 };
 
-function postReducer(state = initialState, action) {
+function postReducer(state: any = initialState, action: any) {
   const { type, payload } = action;
 
   switch (type) {
@@ -41,7 +41,7 @@ function postReducer(state = initialState, action) {
     case DELETE_POST:
       return {
         ...state,
-        posts: state.posts.filter((post) => post._id !== payload),
+        posts: state.posts.filter((post: any) => post._id !== payload),
         loading: false
       };
     case POST_ERROR:
@@ -53,7 +53,7 @@ function postReducer(state = initialState, action) {
     case UPDATE_LIKES:
       return {
         ...state,
-        posts: state.posts.map((post) =>
+        posts: state.posts.map((post: any) =>
           post._id === payload.id ? { ...post, likes: payload.likes } : post
         ),
         loading: false
@@ -70,7 +70,7 @@ function postReducer(state = initialState, action) {
         post: {
           ...state.post,
           comments: state.post.comments.filter(
-            (comment) => comment._id !== payload
+            (comment: any) => comment._id !== payload
           )
         },
         loading: false
