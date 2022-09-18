@@ -149,6 +149,7 @@ export function addComment(postId: string, formData: any) {
 
       dispatch(setAlert('Comment Added', 'success'));
     } catch (err: any) {
+      console.log(err);
       dispatch({
         type: POST_ERROR,
         payload: { msg: err.response.statusText, status: err.response.status }
