@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { Action as ReduxAction,  } from "redux";
+import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { setAlert } from './alert';
 
 import {
@@ -12,7 +14,19 @@ import {
   CLEAR_PROFILE
 } from './constants';
 import setAuthToken from '../utils/setAuthToken';
+import { AnyAction, Dispatch } from 'redux';
 
+export type Action<T extends string = string, P = void> = P extends void
+  ? ReduxAction<T>
+  : ReduxAction<T> & Readonly<{ payload: P }>;
+
+  export type State = {};
+export type DispatchAction<T = void> = ThunkAction<
+  Promise<T>,
+  State,
+  void,
+  Action
+>;
 export function loadUser() {
   return async (dispatch: any) => {
     if (localStorage.token) {
