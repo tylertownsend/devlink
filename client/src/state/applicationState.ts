@@ -1,17 +1,8 @@
 type ApplicationState = {
   alert: Array<AlertState>
   auth: AuthState; 
-  post: {
-    posts: Array<PostState>;
-    post: PostState;
-    loading: boolean;
-  }
-  profile: {
-    loading: boolean;
-    profile: ProfileState;
-    profiles: Array<ProfileState>;
-    repo: Array<any>;
-  }
+  post: ApplicationPostState;
+  profile: ApplicationProfileState;
 }
 
 export type AuthState = {
@@ -19,6 +10,21 @@ export type AuthState = {
   isAuthenticated: boolean | null;
   loading: boolean;
   user: UserState | null;
+}
+
+export type ApplicationPostState = {
+  posts: Array<PostState>;
+  post: PostState | null;
+  loading: boolean;
+  error?: any;
+}
+
+export type ApplicationProfileState = {
+  loading: boolean;
+  profile: ProfileState | null;
+  profiles: Array<ProfileState>;
+  repos: Array<any>;
+  error?: any;
 }
 
 export type AlertState = {
@@ -34,7 +40,7 @@ export type PostState = {
    */
   _id: string;
   avatar: string;
-  comments: Array<Comment>;
+  comments: Array<CommentState>;
   likes: Array<LikeState>;
   /**
    * Name of the user who posted;

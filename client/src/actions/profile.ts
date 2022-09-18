@@ -16,8 +16,6 @@ export function getCurrentProfile() {
   return async (dispatch: any) => {
     try {
       const res = await axios.get('/api/profile/me');
-      console.log('from client');
-      console.log(res);
       dispatch({
         type: GET_PROFILE,
         payload: res.data
@@ -90,9 +88,14 @@ export function getGithubRepos(username: string) {
   }
 }
 
+/**
+ * 
+ * @param formData 
+ * @param history This is react history object.
+ * @param edit 
+ * @returns 
+ */
 export function createProfile(formData: any, history: any, edit = false) {
-  console.log(formData);
-  console.log(history);
   return async function(dispatch: any) {
     try {
       const config = {

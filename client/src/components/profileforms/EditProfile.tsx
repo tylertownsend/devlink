@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createProfile, getCurrentProfile } from '../../actions/profile';
 
-const EditProfile = (props) => {
+const EditProfile = (props: any) => {
   const createProfile = props.createProfile;
   const history = props.history;
   const getCurrentProfile = props.getCurrentProfile; 
@@ -65,11 +65,11 @@ const EditProfile = (props) => {
     instagram
   } = formData;
 
-  const onChange = (e) => {
+  const onChange = (e: any) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: any) => {
     e.preventDefault();
     createProfile(formData, history, true);
   }
@@ -194,7 +194,7 @@ EditProfile.propTypes = {
   profile: PropTypes.object.isRequired
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any) => {
   return {
     profile: state.profile
   }

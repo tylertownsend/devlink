@@ -1,8 +1,9 @@
-import { SET_ALERT, REMOVE_ALERT } from '../actions/constants';
+import { SET_ALERT, REMOVE_ALERT, ActionType } from '../actions/actionTypes';
+import { AlertState } from '../state/applicationState';
 
-const initialState: Array<any> = []
+const initialState: Array<AlertState> = []
 
-export default function alert(state: any = initialState, action: any) {
+export default function alert(state: Array<AlertState> = initialState, action: ActionType) {
   switch(action.type) {
     case SET_ALERT:
       return [...state, action.payload];

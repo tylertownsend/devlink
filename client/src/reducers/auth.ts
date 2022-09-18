@@ -1,4 +1,3 @@
-import { Action } from 'redux';
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -8,7 +7,7 @@ import {
   LOGIN_FAIL,
   LOGOUT,
   ActionType
-} from '../actions/constants';
+} from '../actions/actionTypes';
 import ApplicationState, { AuthState, UserState } from '../state/applicationState';
 
 const initialState: AuthState =  {

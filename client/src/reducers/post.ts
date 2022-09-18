@@ -6,17 +6,19 @@ import {
   ADD_POST,
   GET_POST,
   ADD_COMMENT,
-  REMOVE_COMMENT
-} from '../actions/constants';
+  REMOVE_COMMENT,
+  ActionType
+} from '../actions/actionTypes';
+import { ApplicationPostState, CommentState, PostState } from '../state/applicationState';
 
-const initialState = {
+const initialState: ApplicationPostState = {
   posts: [],
   post: null,
   loading: true,
   error: {}
 };
 
-function postReducer(state: any = initialState, action: any) {
+function postReducer(state: ApplicationPostState = initialState, action: ActionType) {
   const { type, payload } = action;
 
   switch (type) {
@@ -41,7 +43,7 @@ function postReducer(state: any = initialState, action: any) {
     case DELETE_POST:
       return {
         ...state,
-        posts: state.posts.filter((post: any) => post._id !== payload),
+        posts: state.posts.filter((post: PostState) => post._id !== payload),
         loading: false
       };
     case POST_ERROR:
@@ -53,7 +55,7 @@ function postReducer(state: any = initialState, action: any) {
     case UPDATE_LIKES:
       return {
         ...state,
-        posts: state.posts.map((post: any) =>
+        posts: state.posts.map((post: PostState) =>
           post._id === payload.id ? { ...post, likes: payload.likes } : post
         ),
         loading: false
@@ -65,12 +67,13 @@ function postReducer(state: any = initialState, action: any) {
         loading: false
       };
     case REMOVE_COMMENT:
+      const post = state.post as PostState;
       return {
         ...state,
         post: {
           ...state.post,
-          comments: state.post.comments.filter(
-            (comment: any) => comment._id !== payload
+          comments: post.comments.filter(
+            (comment: CommentState) => comment._id !== payload
           )
         },
         loading: false

@@ -2,53 +2,45 @@ import React, { Fragment, useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addEducation } from '../../actions/profile';
+import { addExperience } from '../../actions/profile';
 
-const AddEducation = ({ addEducation, history }) => {
+const AddExperience = ({ addExperience, history }: any) => {
   const [formData, setFormData] = useState({
-    school: '',
-    degree: '',
-    fieldOfStudy: '',
+    company: '',
+    title: '',
+    location: '',
     from: '',
     to: '',
     current: false,
     description: ''
   });
 
-  const {
-    school,
-    degree,
-    fieldOfStudy,
-    from,
-    to,
-    description,
-    current
-  } = formData;
+  const { company, title, location, from, to, current, description } = formData;
 
-  const onChange = e =>
+  const onChange = (e: any) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   return (
     <Fragment>
-      <h1 className="large text-primary">Add Your Education</h1>
+      <h1 className="large text-primary">Add An Experience</h1>
       <p className="lead">
-        <i className="fas fa-code-branch" /> Add any school or bootcamp that you
-        have attended
+        <i className="fas fa-code-branch" /> Add any developer/programming
+        positions that you have had in the past
       </p>
       <small>* = required field</small>
       <form
         className="form"
         onSubmit={e => {
           e.preventDefault();
-          addEducation(formData, history);
+          addExperience(formData, history);
         }}
       >
         <div className="form-group">
           <input
             type="text"
-            placeholder="* School or Bootcamp"
-            name="school"
-            value={school}
+            placeholder="* Job Title"
+            name="title"
+            value={title}
             onChange={onChange}
             required
           />
@@ -56,9 +48,9 @@ const AddEducation = ({ addEducation, history }) => {
         <div className="form-group">
           <input
             type="text"
-            placeholder="* Degree or Certificate"
-            name="degree"
-            value={degree}
+            placeholder="* Company"
+            name="company"
+            value={company}
             onChange={onChange}
             required
           />
@@ -66,9 +58,9 @@ const AddEducation = ({ addEducation, history }) => {
         <div className="form-group">
           <input
             type="text"
-            placeholder="Field of Study"
-            name="fieldOfStudy"
-            value={fieldOfStudy}
+            placeholder="Location"
+            name="location"
+            value={location}
             onChange={onChange}
           />
         </div>
@@ -82,10 +74,12 @@ const AddEducation = ({ addEducation, history }) => {
               type="checkbox"
               name="current"
               checked={current}
-              value={current}
-              onChange={() => setFormData({ ...formData, current: !current })}
+              // value={current}
+              onChange={() => {
+                setFormData({ ...formData, current: !current });
+              }}
             />{' '}
-            Current School
+            Current Job
           </p>
         </div>
         <div className="form-group">
@@ -101,9 +95,9 @@ const AddEducation = ({ addEducation, history }) => {
         <div className="form-group">
           <textarea
             name="description"
-            cols="30"
-            rows="5"
-            placeholder="Program Description"
+            cols={30}
+            rows={5}
+            placeholder="Job Description"
             value={description}
             onChange={onChange}
           />
@@ -117,8 +111,8 @@ const AddEducation = ({ addEducation, history }) => {
   );
 };
 
-AddEducation.propTypes = {
-  addEducation: PropTypes.func.isRequired
+AddExperience.propTypes = {
+  addExperience: PropTypes.func.isRequired
 };
 
-export default connect(null, { addEducation })(withRouter(AddEducation));
+export default connect(null, { addExperience })(withRouter(AddExperience));

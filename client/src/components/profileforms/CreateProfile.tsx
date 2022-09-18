@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createProfile } from '../../actions/profile';
 
-const CreateProfile = (props) => {
+const CreateProfile = (props: any) => {
   const createProfile = props.createProfile;
   const history = props.history;
   const [formData, setFormData] = useState({
@@ -22,11 +22,11 @@ const CreateProfile = (props) => {
     instagram: ''
   });
 
-  const onChange = (e) => {
+  const onChange = (e: any) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: any) => {
     e.preventDefault();
     createProfile(formData, history);
   }

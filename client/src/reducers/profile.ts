@@ -5,10 +5,12 @@ import {
   UPDATE_PROFILE,
   GET_PROFILES,
   GET_REPOS,
-  NO_REPOS
-} from '../actions/constants';
+  NO_REPOS,
+  ActionType
+} from '../actions/actionTypes';
+import { ApplicationProfileState } from '../state/applicationState';
 
-const initialState = {
+const initialState: ApplicationProfileState = {
   profile: null,
   profiles: [],
   repos: [],
@@ -16,7 +18,7 @@ const initialState = {
   error: {}
 };
 
-function profileReducer(state: any = initialState, action: any) {
+function profileReducer(state: ApplicationProfileState = initialState, action: ActionType) {
   const { type, payload } = action;
 
   switch (type) {
