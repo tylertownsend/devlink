@@ -4,7 +4,12 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types'; 
 import { login } from '../../actions/auth';
 
-export const Login = ({ login, isAuthenticated }) => {
+export const Login = (loginProps: any) => {
+  const {
+    login,
+    isAuthenticated
+  } = loginProps;
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -12,11 +17,11 @@ export const Login = ({ login, isAuthenticated }) => {
 
   const { email, password } = formData;
 
-  const onChange = e => setFormData({
+  const onChange = (e: any) => setFormData({
     ...formData, [e.target.name]: e.target.value
   });
 
-  const onSubmit = event => {
+  const onSubmit = (event: any) => {
     event.preventDefault();
     login(email, password);
   };
@@ -66,7 +71,7 @@ Login.propTypes = {
   isAuthenticated: PropTypes.bool
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
   isAuthenticated: state.auth.isAuthenticated
 });
 
