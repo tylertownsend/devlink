@@ -1,12 +1,12 @@
-import express from 'express';
+import express, { Request, Response} from 'express';
 import bcrypt from 'bcryptjs';
 import gravatar from 'gravatar';
 import jwt from 'jsonwebtoken';
 import config from 'config';
-const { check, validationResult } = require('express-validator');
+import { check, validationResult } from 'express-validator';
 
 import { User, UserModel } from '../../models/users';
-
+import { UserFormData } from '../data/users';
 
 const router = express.Router();
 
@@ -16,17 +16,13 @@ const router = express.Router();
  * @access      Public
  */
 router.post('/', [
-  check('name', 'Name is required')
-    .not()
-    .isEmpty(),
+  check('name', 'Name is required').not().isEmpty(),
   check('email', 'Please include a valid email').isEmail(),
-  check(
-    'password',
-    'Please enter a password with 6 or more characters')
-  .isLength({ min: 6 })
+  check('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 })
 ],
-async (req: any, res: any) => {
+async (req: Request<any, any, UserFormData>, res: Response) => {
   const errors = validationResult(req);
+
   if(!errors.isEmpty()) {
     return res.status(400).json ({ errors: errors.array() });
   }
@@ -34,13 +30,15 @@ async (req: any, res: any) => {
   const { name, email, password } = req.body;
 
   try {
-    await _checkIfUserExists(email, res);
+    const userExists = await checkIfUserExists(email, res);
+    if (userExists) {
+      return;
+    }
 
-    const user = _createUser(name, email, password);
-    await _encryptPassword(user, password);
+    const user = createUser(name, email, password);
+    await encryptPassword(user, password);
     await user.save();
-    console.log(user);
-    _sendJsonWebToken(user, res);
+    sendJsonWebToken(user, res);
 
   } catch(err: any) {
     console.error(err.message);
@@ -48,15 +46,18 @@ async (req: any, res: any) => {
   }
 });
 
-let _checkIfUserExists = async (email: string, res: any): Promise<null> => {
+async function checkIfUserExists(email: string, res: Response): Promise<boolean> {
   let user = await UserModel.findOne({ email });
   if (user) {
-    return res.status(400).json( { errors: [ { msg: 'User already exists' }]} );
+    const errors = { errors: [ { msg: 'User already exists' }]};
+    res.status(400).json(errors);
+    return true;
   }
-  return user
+  return false;
+  // return user
 }
 
-const _createUser = (name: string, email: string, password: string) => {
+function createUser(name: string, email: string, password: string) {
   const avatar = gravatar.url(email, {
       s: '200',
       r: 'pg',
@@ -72,12 +73,12 @@ const _createUser = (name: string, email: string, password: string) => {
   return user;
 }
 
-const _encryptPassword = async (user: any, password: string) => {
+async function encryptPassword(user: any, password: string) {
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(password, salt);
 }
 
-const _sendJsonWebToken = (user: any, res: any) => {
+function sendJsonWebToken(user: any, res: Response) {
   const payload = {
     user: {
       id: user.id

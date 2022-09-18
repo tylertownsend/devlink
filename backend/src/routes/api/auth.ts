@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import config from 'config';
@@ -6,6 +6,7 @@ import { check, validationResult } from 'express-validator';
 
 import { auth } from '../../middleware/auth';
 import { UserModel } from '../../models/users';
+import { UserCredentialData } from '../data/users';
 
 const router = express.Router();
 
@@ -35,7 +36,7 @@ router.post('/',
   check('email', 'Please include a valid email').isEmail(),
   check('password', 'Please enter a valid password').isLength({ min: 6 })
 ],
-async (req: any, res: any) => {
+async (req: Request<any, any, UserCredentialData>, res: Response) => {
   const errors = validationResult(req);
   if(!errors.isEmpty()) {
     return res.status(400).json ({ errors: errors.array() });
@@ -44,27 +45,33 @@ async (req: any, res: any) => {
   const { email, password } = req.body;
 
   try {
-    let user = await _getUser(email, res);
+    const user = await getUser(email, res);
+    if (!user) {
+      return;
+    }
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json( { errors: [ { msg: 'Invalid Credentials.' }]} );
     }
-    _sendJsonWebToken(user, res);
+
+    sendJsonWebToken(user, res);
   } catch(err: any) {
     console.error("Error Message" + err.message);
     res.status(500).send('Server error');
   }
 });
 
-let _getUser = async (email: any, res: any) => {
-  let user = await UserModel.findOne({ email });
+async function getUser(email: string, res: any) {
+  const user = await UserModel.findOne({ email });
   if (!user) {
-    return res.status(400).json( { errors: [ { msg: 'Invalid Credentials.' }]} );
+    res.status(400).json( { errors: [ { msg: 'Invalid Credentials.' }]} );
+    return null;
   }
-  return user
+  return user;
 }
 
-const _sendJsonWebToken = (user: any, res: any) => {
+function sendJsonWebToken(user: any, res: any) {
   const payload = {
     user: {
       id: user.id

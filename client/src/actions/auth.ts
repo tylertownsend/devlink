@@ -1,6 +1,4 @@
 import axios from 'axios';
-import { Action as ReduxAction,  } from "redux";
-import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { setAlert } from './alert';
 
 import {
