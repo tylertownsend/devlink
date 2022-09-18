@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 
-import {SET_ALERT, REMOVE_ALERT} from './constants';
+import {SET_ALERT, REMOVE_ALERT} from './actionTypes';
 
 export function setAlert(msg: any, alertType: any, timeout: number = 5000) {
   return (dispatch: any) => {

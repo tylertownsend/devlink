@@ -10,7 +10,7 @@ import {
   PROFILE_ERROR,
   GET_REPOS,
   NO_REPOS
-} from './constants';
+} from './actionTypes';
 
 export function getCurrentProfile() {
   return async (dispatch: any) => {

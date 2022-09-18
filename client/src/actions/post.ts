@@ -10,7 +10,7 @@ import {
   GET_POST,
   ADD_COMMENT,
   REMOVE_COMMENT
-} from './constants';
+} from './actionTypes';
 
 // Get posts
 export function getPosts() {

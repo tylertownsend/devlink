@@ -12,7 +12,7 @@ import {
   LOGIN_FAIL,
   LOGOUT,
   CLEAR_PROFILE
-} from './constants';
+} from './actionTypes';
 import setAuthToken from '../utils/setAuthToken';
 
 export function loadUser() {
