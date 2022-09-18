@@ -168,7 +168,7 @@ export function createProfile(formData: ProfileFormData, history: any, edit = fa
 }
 
 // Add Experience
-export function addExperience(formData: any, history: any) {
+export function addExperience(formData: ExperienceFormData, history: any) {
   return async (dispatch: any) => {
     try {
       const res = await axios.put('/api/profile/experience', formData);
@@ -195,7 +195,7 @@ export function addExperience(formData: any, history: any) {
 };
 
 // Add Education
-export function addEducation(formData: any, history: any) {
+export function addEducation(formData: EducationFormData, history: any) {
   return async (dispatch: any) => {
     try {
       const res = await axios.put('/api/profile/education', formData);

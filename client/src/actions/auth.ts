@@ -15,6 +15,13 @@ import {
 } from './actionTypes';
 import setAuthToken from '../utils/setAuthToken';
 
+export type AuthFormData = {
+  name: string;
+  email: string;
+  password: string;
+  password2: string;
+}
+
 export function loadUser() {
   return async (dispatch: any) => {
     if (localStorage.token) {
@@ -36,7 +43,7 @@ export function loadUser() {
   }
 }
 
-export function register({ name, email, password }: any) {
+export function register({ name, email, password }: AuthFormData) {
   return async (dispatch: any) => {
     const config = {
       headers: {
@@ -68,7 +75,7 @@ export function register({ name, email, password }: any) {
   }
 }
 
-export function login(email: any, password: any) {
+export function login(email: string, password: string) {
   return async (dispatch: any) => {
     const config = {
       headers: {

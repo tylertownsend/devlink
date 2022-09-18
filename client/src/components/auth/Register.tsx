@@ -3,7 +3,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
 import { setAlert } from '../../actions/alert';
-import { register } from '../../actions/auth';
+import { AuthFormData, register } from '../../actions/auth';
 import ApplicationState from '../../state/applicationState';
 
 type RegisterProps = {
@@ -16,7 +16,7 @@ export const Register = ({ setAlert, register, isAuthenticated}: PropsFromRedux)
     email: '',
     password: '',
     password2: ''
-  });
+  } as AuthFormData);
 
   const { name, email, password, password2 } = formData;
 
@@ -29,7 +29,7 @@ export const Register = ({ setAlert, register, isAuthenticated}: PropsFromRedux)
     if (password !== password2) {
       setAlert('Passwords do not match', 'danger');
     } else {
-      register({ name, email, password });
+      register(formData);
     }
   };
 
