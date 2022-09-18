@@ -23,8 +23,6 @@ export function getCurrentProfile() {
         payload: res.data
       })
     } catch (err: any) {
-      console.error('error');
-      console.error(err);
       dispatch({
         type: PROFILE_ERROR,
         payload: { msg: err.response.statusText, status: err.response.status }
@@ -93,6 +91,8 @@ export function getGithubRepos(username: string) {
 }
 
 export function createProfile(formData: any, history: any, edit = false) {
+  console.log(formData);
+  console.log(history);
   return async function(dispatch: any) {
     try {
       const config = {

@@ -7,7 +7,7 @@ import { register } from '../../actions/auth';
 import ApplicationState from '../../state/applicationState';
 
 type RegisterProps = {
-  isAuthenticated: boolean;
+  isAuthenticated: boolean | null;
 }
 
 export const Register = ({ setAlert, register, isAuthenticated}: PropsFromRedux) => {

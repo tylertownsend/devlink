@@ -15,10 +15,10 @@ type ApplicationState = {
 }
 
 export type AuthState = {
-  token: string;
-  isAuthenticated: boolean;
+  token: string | null;
+  isAuthenticated: boolean | null;
   loading: boolean;
-  user: UserState;
+  user: UserState | null;
 }
 
 export type AlertState = {

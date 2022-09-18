@@ -1,3 +1,4 @@
+import { Action } from 'redux';
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -5,20 +6,25 @@ import {
   AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
-  LOGOUT
+  LOGOUT,
+  ActionType
 } from '../actions/constants';
+import ApplicationState, { AuthState, UserState } from '../state/applicationState';
 
-const initialState =  {
+const initialState: AuthState =  {
   token: localStorage.getItem('token'),
   isAuthenticated: null,
   loading: true,
   user: null
 }
 
+type AuthActionType = ActionType & { payload: UserState };
 
-export default function auth(state: any = initialState, action: any) {
-  const { type, payload } = action;
-
+export default function auth(state: AuthState = initialState, action: AuthActionType): AuthState {
+  const {
+    type,
+    payload
+  } = action;
   switch(type) {
     case USER_LOADED:
       return {

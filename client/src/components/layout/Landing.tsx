@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import ApplicationState from '../../state/applicationState';
 
 type LandingProps = {
-  isAuthenticated: boolean;
+  isAuthenticated: boolean | null;
 }
 
 export const Landing = ({ isAuthenticated }: PropsFromRedux) => {
