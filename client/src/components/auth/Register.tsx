@@ -1,11 +1,16 @@
 import React ,{ Fragment, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
+
 import { setAlert } from '../../actions/alert';
 import { register } from '../../actions/auth';
-import { PropTypes } from 'prop-types';
+import ApplicationState from '../../state/applicationState';
 
-export const Register = ({ setAlert, register, isAuthenticated}) => {
+type RegisterProps = {
+  isAuthenticated: boolean;
+}
+
+export const Register = ({ setAlert, register, isAuthenticated}: PropsFromRedux) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -15,11 +20,11 @@ export const Register = ({ setAlert, register, isAuthenticated}) => {
 
   const { name, email, password, password2 } = formData;
 
-  const onChange = e => setFormData({
+  const onChange = (e: any) => setFormData({
     ...formData, [e.target.name]: e.target.value
   });
 
-  const onSubmit = event => {
+  const onSubmit = (event: any) => {
     event.preventDefault();
     if (password !== password2) {
       setAlert('Passwords do not match', 'danger');
@@ -69,7 +74,7 @@ export const Register = ({ setAlert, register, isAuthenticated}) => {
             type="password"
             placeholder="Password"
             name="password"
-            minLength="6"
+            minLength={6}
             value={password}
             onChange={ event => onChange(event)}
             required
@@ -80,7 +85,7 @@ export const Register = ({ setAlert, register, isAuthenticated}) => {
             type="password"
             placeholder="Confirm Password"
             name="password2"
-            minLength="6"
+            minLength={6}
             value={password2}
             onChange={ event => onChange(event)}
             required
@@ -95,14 +100,11 @@ export const Register = ({ setAlert, register, isAuthenticated}) => {
   )
 }
 
-Register.propTypes = {
-  setAlert: PropTypes.func.isRequired,
-  register: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool
-}
+function mapStateToProps(state: ApplicationState): RegisterProps {
+  return { isAuthenticated: state.auth.isAuthenticated };
+};
 
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
-});
+const connector = connect(mapStateToProps, { setAlert, register });
+type PropsFromRedux = ConnectedProps<typeof connector>;
 
-export default connect(mapStateToProps, { setAlert, register })(Register);
+export default connector(Register);
